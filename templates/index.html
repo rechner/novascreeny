@@ -1,0 +1,162 @@
+<html>
+<head>
+   
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slick/slick.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slick/slick-theme.css') }}"/>
+
+</head>
+
+<body>
+
+<a href="http://www.accuweather.com/en/us/reston-va/20190/current-weather/341249" class="aw-widget-legal">
+<!--
+By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.
+-->
+</a>
+
+<div style="width: 320px" id="weather">
+	<div id="awtd1469117993548" class="aw-widget-36hour"  data-locationkey="341249" data-unit="c" 
+    data-language="en-us" data-useip="false" data-uid="awtd1469117993548" data-editlocation="false"></div>
+  <script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
+</div>
+
+
+<div class="logo-top">
+    <img src="{{url_for('static', filename='images/logo2.png')}}">
+</div>
+
+<div class="logo-rh">
+    <img src="{{url_for('static', filename='images/logo.png')}}" />
+</div>
+
+<div id="frame">
+  <div class="today">
+    <span>Today</span><span id="clock"></span>
+    <div class="content">
+      <div class="today-slider" id="today">
+      <div>
+        {% for event in events.today %}
+        {%- if (loop.index0 % 3) == 0 and loop.index != events|length and loop.index0 != 0 -%}
+      </div>
+      <div>
+        {%- endif -%}
+        <div class="event {{ 'event-started' if event.status == 'started' }}">
+          <div class="time">{{ event.datetime|time}}</div>
+          <div class="event-container">
+            <div class="title">{{ event.name }}</div>
+            <div class="location">{{ event.venue.name }}</div>
+          </div>  
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="today upcoming">
+    <span>Upcoming</span>
+    
+    <div class="content">
+      <div id="upcoming" class="upcoming-slider">
+
+        {% for event in events.today %}
+        <div class="container">
+        <div class="event">
+          <div class="time-wide">{{ event.datetime|dateshort|safe}}</div>
+          <div class="event-container">
+            <div class="title">{{ event.name }}</div>
+            <div class="location">{{ event.venue.name }}</div>
+          </div>  
+        </div>
+      </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='slick/slick.min.js') }}"></script>
+<script>
+function updateTime() {
+  var today = new Date();
+  var date = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+  var hour = today.getHours();
+  var minute = today.getMinutes();
+  var second = today.getSeconds();
+  $("#clock").html(date + " " + pad(hour, 2) + ":" + pad(minute, 2) + ":" + pad(second, 2));
+  setTimeout(updateTime, 1000);
+}
+
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function refresh_weather() {
+  $("#weather").html("");
+  $("#weather").html('<div id="awtd1469117993548" class="aw-widget-36hour"  data-locationkey="341249" data-unit="c"'+
+    'data-language="en-us" data-useip="false" data-uid="awtd1469117993548" data-editlocation="false"></div>'+
+    '<script type="text/javascript" src="http://oap.accuweather.com/launch.js">' + "<\/script>");
+  setTimeout(refresh_weather, 600000);
+}
+
+function update() {
+  $("#frame").fadeOut();
+  $(".upcoming-slider").slick('unslick');
+  $(".today-slider").slick('unslick');
+  $.get("/monitors/1/updates", function (data) {
+      $("#frame").html(data);
+      apply_slick();
+      setTimeout(function() { $("#frame").fadeIn(); advance_slick()}, 3000);
+  }).fail(function () {
+      $("#frame").fadeIn();
+  });
+  setTimeout(update, 900000);
+}
+
+function advance_slick() {
+  $(".upcoming-slider").slick("next");
+  $(".today-slider").slick("next");
+}
+
+function apply_slick() {
+
+    $(".upcoming-slider").slick({
+      infinite: true,
+      speed: 500,
+      autoplaySpeed: 3000,
+      autoplay: true,
+      fade: true,
+      cssEase: 'linear',
+      prevArrow: '',
+      nextArrow: '',
+    });
+    $(".today-slider").slick({
+      infinite: true,
+      speed: 350,
+      autoplaySpeed: 7000,
+      autoplay: true,
+      prevArrow: '',
+      nextArrow: '',
+    }).on('init', function () {
+      $("#frame").fadeIn();
+      $(".today-slider").slick('play');
+    });
+}
+
+$(document).ready(function () {
+    apply_slick();
+    updateTime();
+    setTimeout(refresh_weather, 600000);
+    setTimeout(update, 900000);
+});
+</script>
+</body>
+</html>

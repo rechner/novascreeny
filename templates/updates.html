@@ -1,0 +1,45 @@
+
+<div class="today">
+  <span>Today</span><span id="clock"></span>
+  <div class="content">
+    <div class="today-slider" id="today">
+    <div>
+      {% for event in events.today %}
+      {%- if (loop.index0 % 3) == 0 and loop.index != events|length and loop.index0 != 0 -%}
+    </div>
+    <div>
+      {%- endif -%}
+      <div class="event {{ 'event-started' if event.status == 'started' }}">
+        <div class="time">{{ event.datetime|time}}</div>
+        <div class="event-container">
+          <div class="title">{{ event.name }}</div>
+          <div class="location">{{ event.venue.name }}</div>
+        </div>  
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="today upcoming">
+  <span>Upcoming</span>
+  
+  <div class="content">
+    <div id="upcoming" class="upcoming-slider">
+
+      {% for event in events.today %}
+      <div class="container">
+      <div class="event">
+        <div class="time-wide">{{ event.datetime|dateshort|safe}}</div>
+        <div class="event-container">
+          <div class="title">{{ event.name }}</div>
+          <div class="location">{{ event.venue.name }}</div>
+        </div>  
+      </div>
+    </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>

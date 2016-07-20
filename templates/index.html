@@ -111,12 +111,13 @@ function update() {
   $("#frame").fadeOut();
   $(".upcoming-slider").slick('unslick');
   $(".today-slider").slick('unslick');
-  $.get("/monitors/1/updates", function (data) {
+  $.get("/novalabs/monitors/1/updates", function (data) {
       $("#frame").html(data);
-      apply_slick();
+      setTimeout(apply_slick, 500);
       setTimeout(function() { $("#frame").fadeIn(); advance_slick()}, 3000);
   }).fail(function () {
       $("#frame").fadeIn();
+      apply_slick();
   });
   setTimeout(update, 900000);
 }

@@ -1,0 +1,9 @@
+{%- for photo in photos -%}
+<div class="photo-frame">
+    <img src="{{ photo.src }}" />
+    <div>
+      <h2>{{ photo.title }}</h2>
+      <p>{{ photo.date|date }}</p>
+    </div>
+</div>
+{%- endfor -%}

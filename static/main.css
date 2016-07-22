@@ -1,3 +1,51 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 
 html { 
   overflow: -moz-scrollbars-none;
@@ -45,10 +93,12 @@ html {
   padding-right: 20px;
   font-family: sans;
   font-size: 60px;
-  margin-top: -25px;
   overflow: visible;
   border: 2px solid #59595C;
   background-color: #59595C;
+  position: relative;
+  top: -6px;
+  border-radius: 10px 10px 0 0;
 }
 
 .today #clock {
@@ -57,21 +107,27 @@ html {
   background-color: white;
   border: none;
   color: black;
+  left: 90px;
+  top: -20px;
 }
 
 .today .content {
   color: grey;
   border: 2px solid #59595C;
-  min-height: 350px;
+  height: 420px;
   padding: 20px;
+  overflow: hidden;
 }
 
 .title {
   color: black;
   font-size: 48px;
+  padding-bottom: 5px;
+  margin-top: -10px;
 }
 
 .location {
+  margin-top: -10px;
   font-size: 30px;
 }
 
@@ -92,7 +148,6 @@ html {
 
 .event {
   display: flex;
-  margin-bottom: 10px;
 }
 
 .event-started {
@@ -108,10 +163,72 @@ html {
 }
 
 .event-container {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  width: 1096px;
+  white-space: pre-line;
+  overflow: hidden;
 }
 
-.upcoming .event-container .title {
+.upcoming .event-container .title,
+.event:nth-child(3n) .title{
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+}
+
+.upcoming .content {
+    min-height: 10px;
+    height: 130px;
+}
+
+.marquee {
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 1005px;
+    font-size: 22pt;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.marquee img {
+    height: 28px;
+    margin-bottom: -2px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#photos {
+    width: 1315px;
+    height: 805px;
+    position:absolute;
+    top: 185px;
+    left: 350px;
+    background-color: white;
+    display: none;
+}
+
+.photo-frame {
+    width: 100%;
+}
+
+.photo-frame img {
+    height: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 10px solid #ccc;
+    border-radius: 5px;
+}
+
+.photo-frame h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.photo-frame p {
+    text-align: center;
 }

@@ -48,7 +48,7 @@ def fetch_headlines():
         if parser['status'] != 200 or len(parser['entries']) == 0:
             # Error fetching feed, try the next one
             continue
-        block = { 'headlines' : [ n['title'] for n in parser['entries'] ][:50] }
+        block = { 'headlines' : [ n['title'] for n in parser['entries'] ][:20] }
         block['icon'] = url_for('static', filename='images/{0}'.format(feed['icon']))
         headlines.append(block)
     return headlines
@@ -85,6 +85,11 @@ def get_recent_photos():
 def monitor1():
     events = get_events()
     return render_template('index.html', events=events)
+
+@app.route('/monitors/2')
+def monitor2():
+    events = get_events()
+    return render_template('index-2.html', events=events)
 
 @app.route('/monitors/1/updates')
 def monitor1update():
